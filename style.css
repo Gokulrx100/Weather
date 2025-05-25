@@ -1,0 +1,47 @@
+body{
+    background-image:url(assets/bg.jpg);
+     background-size: cover;           
+    background-repeat: no-repeat;      
+    background-position: center center;
+    min-height: 100vh;                
+    margin: 0;                        
+    padding: 0;  
+}
+ 
+ 
+ nav button img {
+            height: 1em; /* Match text size */
+            width: auto;
+            vertical-align: middle;
+            margin-right: 0.5em;
+        }
+nav button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5em;
+            font-size: 20px;
+        }
+nav{
+    padding:10px 20px;
+    border-style:solid;
+    border-radius:15px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    gap:10em;
+    margin:2em auto;
+    width:fit-content;
+}
+
+nav button:hover, nav button.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    outline: none;
+}
+    
+.hidden {
+    display: none;
+}
+
+
