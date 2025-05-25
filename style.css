@@ -1,47 +1,57 @@
 body{
     background-image:url(assets/bg.jpg);
-     background-size: cover;           
+    background-size: cover;           
     background-repeat: no-repeat;      
     background-position: center center;
     min-height: 100vh;                
     margin: 0;                        
     padding: 0;  
-}
+    }
  
- 
- nav button img {
-            height: 1em; /* Match text size */
-            width: auto;
-            vertical-align: middle;
-            margin-right: 0.5em;
-        }
+
+
+/* button */
+nav button img {
+                height: 1em;
+                width: auto;
+                vertical-align: middle;
+                margin-right: 0.5em;
+            }
+
 nav button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0.5em;
-            font-size: 20px;
-        }
-nav{
-    padding:10px 20px;
-    border-style:solid;
-    border-radius:15px;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    gap:10em;
-    margin:2em auto;
-    width:fit-content;
-}
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0.5em;
+                font-size: 20px;
+            }
 
 nav button:hover, nav button.active {
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     outline: none;
-}
-    
+    }
+
+
+
+/* nav bar */
+nav{
+    padding:10px 20px;
+    border-radius:15px;
+    background: rgba(255, 255, 255, 0.25); 
+    border: 1.5px solid #b3c6e0;          
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    backdrop-filter: blur(10px); 
+    display: flex;
+    justify-content: center;
+    gap:10em;
+    margin:2em auto;
+    width:fit-content;
+}   
 .hidden {
     display: none;
 }
+
+
 
 
