@@ -48,6 +48,8 @@ nav{
     gap:10em;
     margin:2em auto;
     width:fit-content;
+    position: relative;
+    z-index:10;
 }   
 .hidden {
     display: none;
@@ -225,5 +227,17 @@ nav{
     gap: 24px;
     align-content: center;
     align-items: center;
+}
+
+
+
+/* maps */
+#map {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
 }
 
