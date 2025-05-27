@@ -6,7 +6,6 @@ body{
     height: 100vh;                
     margin: 0;                        
     padding: 0;
-    overflow-y:hidden;
     }
  
 
@@ -58,7 +57,7 @@ nav{
 
 /* input box */
 #cityInput {
-    width: 565px;
+    width: 627px;
     height: 30px;
     padding: 10px 18px;
     border-radius: 15px;
@@ -72,7 +71,7 @@ nav{
     transition: border 0.2s, box-shadow 0.2s;
     margin-bottom:30px;
     position: relative;
-    left: 271px;
+    left: 220px;
     top:30px;
 }
 
@@ -91,7 +90,7 @@ nav{
 .hourly-forecast {
     display:flex;
     justify-content:space-evenly;
-    gap:10px;
+    gap:26px;
     list-style-type: none;
     font-size:20px;
     margin:0;
@@ -99,7 +98,7 @@ nav{
 } 
 
 .today{
-    font-size: 17px;
+    font-size: 24px;
     background: rgba(255,255,255,0.35);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     backdrop-filter: blur(10px);
@@ -109,12 +108,12 @@ nav{
     border-radius: 15px;
     padding: 14px 30px;
     position: relative;
-    top:30px;
-    left:270px;
+    top:45px;
+    left:220px;
 }
 
 .today .section-title{
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #3a4a5d;
     margin-bottom: 30px;
@@ -128,6 +127,7 @@ nav{
   border-right: 1px solid rgb(197, 195, 195);
   padding:0 10px 10px;
   min-width:80px;
+  font-size:22px;
 }
 .hourly-forecast li:last-child {
   border-right: none;
@@ -135,7 +135,7 @@ nav{
 
 .hourly-forecast span {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
   display: block;
   margin-bottom: 8px;
 }
@@ -144,20 +144,20 @@ nav{
 /* Air condition */
 
 .air-conditions{
-    font-size: 15px;
+    font-size: 22px;
     background: rgba(255,255,255,0.35);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     backdrop-filter: blur(10px);
     border-radius:15px;
     position:relative;
-    top:50px;
+    top:70px;
     width:fit-content;
     padding: 20px 48px 35px 50px;
-    left: 270px;
+    left: 220px;
     }
 
 .air-conditions .section-title{
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #3a4a5d;
     margin-bottom:30px;
@@ -166,7 +166,7 @@ nav{
 }
 
 .conditions-list {
-  font-size:20px;
+  font-size:22px;
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
   gap: 50px 70px; 
@@ -185,12 +185,12 @@ nav{
 
 .conditions-list .label {
   font-weight: bold;
-  font-size: 17px;
+  font-size: 20px;
   margin-bottom: 0; 
 }
 
 .conditions-list .value {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
   margin-top: 0; 
 }
@@ -200,19 +200,19 @@ nav{
 /* weather right */
 .weather-right {
     position: relative;
-    bottom:605px;
-    left: 900px;
+    bottom:655px;
+    left: 920px;
     width: fit-content;
     padding: 15px 70px;
     border-radius: 15px;
     background: rgba(255,255,255,0.35);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     backdrop-filter: blur(10px);
-    font-size:17px;
+    font-size:19px;
 }
 
 .weather-right .section-title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: #3a4a5d;
     margin-bottom: 30px;
@@ -224,11 +224,10 @@ nav{
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 26px;
     align-content: center;
     align-items: center;
 }
-
 
 
 /* maps */
