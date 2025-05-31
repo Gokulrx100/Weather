@@ -289,6 +289,8 @@ function addRecentSearch(city, iconUrl, temp) {
     span => span.textContent.trim().toLowerCase() === city.trim().toLowerCase()
   );
   if (exists) return;
+
+  list.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
   
   const li = document.createElement('li');
   li.innerHTML = `
@@ -296,6 +298,7 @@ function addRecentSearch(city, iconUrl, temp) {
     <img src="${iconUrl}" alt="icon" /><br>
     <span class="value">${temp}</span>
   `;
+  li.classList.add('selected');
   list.insertBefore(li, list.firstChild);
 
   const items = list.querySelectorAll('li');
@@ -308,6 +311,13 @@ function addRecentSearch(city, iconUrl, temp) {
       }
     }, 500); 
   }
+
+  li.addEventListener('click', async() =>{
+    document.querySelectorAll("#recentSearchesList li").forEach(item => {item.classList.remove("selected")});
+    li.classList.add("selected");
+    inputBox.value = city;
+    await getCityCoordinates();
+  });
 }
 
 

@@ -74,11 +74,15 @@ nav{
     position: relative;
     left: 180px;
     top:30px;
+    transition: transform 0.5s ease;
 }
 
 #cityInput::placeholder {
     color: #7b8490;
     opacity: 1;
+}
+#cityInput:hover{
+    transform:scale(1.02);
 }
 #cityInput:focus {
     border: 1.5px solid #67b6c5;
@@ -292,6 +296,17 @@ nav{
 
 .recent-searches li.removing {
   opacity: 0;
+}
+
+.recent-searches li:hover {
+    cursor:pointer;
+    transform: scale(1.05);
+}
+
+.recent-searches li.selected{
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
 }
 
 /* maps */
