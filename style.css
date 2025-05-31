@@ -6,7 +6,7 @@ body{
     height: 100vh;                
     margin: 0;                        
     padding: 0;
-    overflow-y: hidden;
+    /* overflow-y: hidden;; */
     }
  
 
@@ -91,11 +91,12 @@ nav{
 .hourly-forecast {
     display:flex;
     justify-content:space-evenly;
-    gap:26px;
+    gap:35px;
     list-style-type: none;
     font-size:20px;
     margin:0;
     padding:0;
+    min-width:600px;
 } 
 
 .today{
@@ -141,6 +142,15 @@ nav{
   margin-bottom: 8px;
 }
 
+.hourly-forecast img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+.hourly-forecast .time{
+    font-size:18px;
+}
+
 
 /* Air condition */
 
@@ -170,7 +180,7 @@ nav{
   font-size:22px;
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
-  gap: 50px 70px; 
+  gap: 50px 116px; 
   list-style: none;
   padding: 0;
   margin: 0;
@@ -201,7 +211,7 @@ nav{
 /* weather right */
 .weather-right {
     position: relative;
-    bottom:655px;
+    bottom:701px;
     left: 920px;
     width: fit-content;
     padding: 15px 70px;
@@ -228,6 +238,20 @@ nav{
     gap: 26px;
     align-content: center;
     align-items: center;
+}
+.weekly-forecast img{
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.weekly-forecast li {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #b3c6e0;
+    margin-bottom:11px;
 }
 
 

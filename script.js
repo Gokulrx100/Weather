@@ -88,26 +88,28 @@ function getWeatherDetails(name, lat, lon, country, state) {
         windSpeed: data.wind?.speed,
         visibility: data.visibility,
         weatherDescription: data.weather?.[0]?.description,
-        Precepitation: data.rain?.["1h"] || 0,
+        Precipitation: data.rain?.["1h"] || 0,
       };
+      document.getElementById('temp-value').textContent = weatherDetails.temperature !== undefined ? `${Math.round(weatherDetails.temperature)}°C` : '--';
+      document.getElementById('feels-like-value').textContent = weatherDetails.feelsLike !== undefined ? `${Math.round(weatherDetails.feelsLike)}°C` : '--';
+      document.getElementById('humidity-value').textContent = weatherDetails.humidity !== undefined ? `${weatherDetails.humidity}%` : '--';
+      document.getElementById('pressure-value').textContent = weatherDetails.pressure !== undefined ? `${weatherDetails.pressure} hPa` : '--';
+      document.getElementById('wind-value').textContent = weatherDetails.windSpeed !== undefined ? `${(weatherDetails.windSpeed*3.6).toFixed(2)} km/hr`: '--';
+      document.getElementById('visibility-value').textContent = weatherDetails.visibility !== undefined ? `${weatherDetails.visibility / 1000} km` : '--';
+      document.getElementById('precipitation-value').textContent = weatherDetails.Precipitation !== undefined ? `${weatherDetails.Precipitation} mm` : '--';
 
-      console.log(weatherDetails);
       return weatherDetails;
     })
     .catch(error => {
       console.error("Error fetching weather data:", error);
+      [
+        'temp-value', 'feels-like-value', 'humidity-value', 'pressure-value',
+        'wind-value', 'visibility-value', 'precipitation-value'
+      ].forEach(id => document.getElementById(id).textContent = '--');
       return null;
     });
 }
-//       let FORECAST_API_URL= `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`
-//       ,WEATHER_API_URL= `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`,
-//       days=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-//       months=["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-//       fetch(WEATHER_API_URL).then(res => res.json()).then(data => {
-//         console.log(data);
-//       }).catch(() => { alert(`Failed to fetch weather data for ${name}. Please try again.`); });
-// }
 
 function getAirQuality(lat, lon) {
   const url = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
@@ -117,6 +119,7 @@ function getAirQuality(lat, lon) {
     .then(data => {
       const aqi = data.list?.[0]?.main?.aqi || null;
       console.log("Air Quality Index:", aqi);
+      document.getElementById('air-quality-value').textContent = aqi !== null ? aqi : '--';
       return aqi;
     })
     .catch(error => {
@@ -126,13 +129,13 @@ function getAirQuality(lat, lon) {
 }
 
 function getForecastDetails(lat, lon) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&cnt=5`;
 
   return fetch(url)
     .then(response => response.json())
     .then(data => {
-      const today = new Date().toISOString().split('T')[0]; // e.g., "2025-05-31"
-      const desiredHours = ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00"];
+      const today = new Date().toISOString().split('T')[0];
+      const desiredHours = ["06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00","21:00:00"];
 
       const filteredForecasts = data.list.filter(item => {
         return item.dt_txt.startsWith(today) && desiredHours.includes(item.dt_txt.split(' ')[1]);
@@ -141,15 +144,37 @@ function getForecastDetails(lat, lon) {
         temperature: item.main.temp,
         icon: item.weather[0].icon
       }));
+      console.log("Filtered Forecasts:", filteredForecasts);
+      const forecastItems = document.querySelectorAll('.hourly-forecast li');
+      forecastItems.forEach(li => {
+        li.querySelector('.value').textContent = '--';
+        li.querySelector('img').src = '';
+        li.querySelector('img').alt = '';
+      });
+      filteredForecasts.forEach((item, idx) => {
+        if (forecastItems[idx]) {
+          forecastItems[idx].querySelector('.time').textContent = new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          forecastItems[idx].querySelector('.value').textContent = `${Math.round(item.temperature)}°C`;
+          // Update icon
+          forecastItems[idx].querySelector('img').src = `https://openweathermap.org/img/wn/${item.icon}@2x.png`;
+          forecastItems[idx].querySelector('img').alt = item.icon;
+        }
+      });
 
-      console.log("Hourly Forecast:", filteredForecasts);
       return filteredForecasts;
     })
     .catch(error => {
       console.error("Error fetching forecast data:", error);
+      // Optionally reset values on error
+      document.querySelectorAll('.hourly-forecast li').forEach(li => {
+        li.querySelector('.value').textContent = '--';
+        li.querySelector('img').src = '';
+        li.querySelector('img').alt = '';
+      });
       return [];
     });
 }
+
 
 function getCurrentUVIndex(lat, lon) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=uv_index`;
@@ -158,6 +183,7 @@ function getCurrentUVIndex(lat, lon) {
     .then(response => response.json())
     .then(data => {
       const uvIndex = data.current?.uv_index ?? null;
+      document.getElementById('uv-index-value').textContent = uvIndex !== null ? uvIndex : '--';
       console.log("UV Index:", uvIndex);
       return uvIndex;
     })
@@ -179,12 +205,31 @@ async function getSevenDayForecast(lat, lon) {
       icon: day.weather[0].icon,
       description: day.weather[0].description
     }));
-
-    console.log("7-day forecast inside function:", forecast);  // <-- Log here
+    const weeklyItems = document.querySelectorAll('.weekly-forecast li');
+    weeklyItems.forEach((li, idx) => {
+      if (forecast[idx]) {
+        const dayName = forecast[idx].date.toLocaleDateString('en-US', { weekday: 'short' });
+        li.querySelector('.day-name').textContent = dayName;
+        li.querySelector('img').src = `https://openweathermap.org/img/wn/${forecast[idx].icon}@2x.png`;
+        li.querySelector('img').alt = forecast[idx].description;
+        li.querySelector('.value').textContent = `${forecast[idx].temp}°C`;
+      } else {
+        li.querySelector('.day-name').textContent = '--';
+        li.querySelector('img').src = '';
+        li.querySelector('img').alt = '';
+        li.querySelector('.value').textContent = '--';
+      }
+    });
 
     return forecast;
   } catch (error) {
     console.error("Error fetching 7-day forecast:", error);
+    document.querySelectorAll('.weekly-forecast li').forEach(li => {
+      li.querySelector('.day-name').textContent = '--';
+      li.querySelector('img').src = '';
+      li.querySelector('img').alt = '';
+      li.querySelector('.value').textContent = '--';
+    });
     return [];
   }
 }
@@ -194,7 +239,7 @@ async function getSevenDayForecast(lat, lon) {
 
 function getCityCoordinates() {
   let cityName = inputBox.value.trim();
-  inputBox.value = "";
+  // inputBox.value = "";
   if (!cityName) return;
   let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
   fetch(GEOCODING_API_URL).then(res=>res.json()).then(data => {
@@ -209,6 +254,11 @@ function getCityCoordinates() {
 }).catch(() => { alert(`Failed to fetch coordinates for ${cityName}. Please try again.`); });
 }
 
+inputBox.addEventListener("focus", function() {
+  inputBox.value = ""; // Clear the input box when focused
+});
+
+
 cityInput.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
       event.preventDefault(); 
@@ -219,3 +269,32 @@ cityInput.addEventListener('keydown', function(event) {
           getCityCoordinates();
           }
   }});
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        // Use OpenWeatherMap reverse geocoding to get city name
+        fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data[0] && data[0].name) {
+              const { name, country, state } = data[0];
+              inputBox.value = name;
+              getCityCoordinates();
+            }
+          })
+          .catch(() => {
+            inputBox.value = "ernakulam"; getCityCoordinates();
+          });
+      },
+      error => {
+        inputBox.value = "ernakulam"; getCityCoordinates();
+      }
+    );
+  } else {
+    inputBox.value = "ernkaulam"; getCityCoordinates();
+  }
+});
