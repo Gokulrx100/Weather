@@ -65,14 +65,14 @@ nav{
     border: 1.5px solid #b3c6e0;
     font-size: 17px;
     color: #3a4a5d;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.2);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     backdrop-filter: blur(10px);
     outline: none;
     transition: border 0.2s, box-shadow 0.2s;
     margin-bottom:30px;
     position: relative;
-    left: 220px;
+    left: 180px;
     top:30px;
 }
 
@@ -101,9 +101,9 @@ nav{
 
 .today{
     font-size: 24px;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.2);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     outline: none;
     width: fit-content;
     display: inline-block;
@@ -111,7 +111,7 @@ nav{
     padding: 14px 30px;
     position: relative;
     top:45px;
-    left:220px;
+    left:180px;
 }
 
 .today .section-title{
@@ -156,15 +156,15 @@ nav{
 
 .air-conditions{
     font-size: 22px;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.2);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     border-radius:15px;
     position:relative;
     top:70px;
     width:fit-content;
     padding: 20px 48px 35px 50px;
-    left: 220px;
+    left: 180px;
     }
 
 .air-conditions .section-title{
@@ -211,15 +211,15 @@ nav{
 /* weather right */
 .weather-right {
     position: relative;
-    bottom:701px;
-    left: 920px;
+    bottom:700px;
+    left: 870px;
     width: fit-content;
     padding: 15px 70px;
     border-radius: 15px;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.2);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    backdrop-filter: blur(10px);
-    font-size:19px;
+    backdrop-filter: blur(5px);
+    font-size:20px;
 }
 
 .weather-right .section-title {
@@ -254,6 +254,45 @@ nav{
     margin-bottom:11px;
 }
 
+.weekly-forecast li:last-child {
+    border-bottom: none;
+}
+
+/* recent searches */
+.recent-searches{
+    position:relative;
+    left:1200px;
+    bottom:1485px;
+    width:fit-content;
+}
+
+.recent-searches li {
+    font-size: 20px;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 20px 40px;
+    display:flex;
+    width :100%;
+    justify-content: space-between;
+    align-items: center;
+    margin:20px 0;
+}
+
+.recent-searches li img{
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.recent-searches li {
+  transition: transform 0.5s ease, opacity 0.7s ease;
+}
+
+.recent-searches li.removing {
+  opacity: 0;
+}
 
 /* maps */
 #map {
