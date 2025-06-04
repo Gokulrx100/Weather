@@ -527,6 +527,7 @@ body.dark-mode .settings-section{
     color: #e0e6ed !important;
     box-shadow: 0 5px 10px rgba(0,0,0,0.25);
 }
+
 body.dark-mode .unit-dropdown {
   background: rgba(43, 53, 73, 0.2);
   color: #e0e6ed;
@@ -554,6 +555,7 @@ body.dark-mode .settings-section h3{
     position:relative;
     top:140px;
 }
+
 .theme-selector{
     position:relative;
     top:80px;
