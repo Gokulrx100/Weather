@@ -1,4 +1,20 @@
 const apiKey = '764bfa463166ebe1068d27c1d711541b';
+let tempUnit = 'metric';      
+let distanceUnit = 'km';      
+let windUnit = 'km/h';        
+
+function cToF(c) { return (c * 9/5) + 32; }
+function fToC(f) { return (f - 32) * 5/9; }
+function kmToMi(km) { return km * 0.621371; }
+function miToKm(mi) { return mi / 0.621371; }
+function kmToM(km) { return km * 1000; }
+function mToKm(m) { return m / 1000; }
+function msToKmh(ms) { return ms * 3.6; }
+function kmhToMs(kmh) { return kmh / 3.6; }
+function msToKnots(ms) { return ms * 1.94384; }
+function knotsToMs(knots) { return knots / 1.94384; }
+function kmhToKnots(kmh) { return kmh * 0.539957; }
+function knotsToKmh(knots) { return knots / 0.539957; }
 
 document.querySelectorAll('nav button').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -40,12 +56,17 @@ async function getWeatherDetails(name, lat, lon, country, state) {
     };
     console.log("Weather Details:", weatherDetails);
     document.getElementById('temp-value').textContent = weatherDetails.temperature !== undefined ? `${Math.round(weatherDetails.temperature)}°C` : '--';
+    document.getElementById('temp-value').dataset.celsius = weatherDetails.temperature !== undefined ? weatherDetails.temperature : '';
     document.getElementById('feels-like-value').textContent = weatherDetails.feelsLike !== undefined ? `${Math.round(weatherDetails.feelsLike)}°C` : '--';
+    document.getElementById('feels-like-value').dataset.celsius = weatherDetails.feelsLike !== undefined ? weatherDetails.feelsLike : '';
     document.getElementById('humidity-value').textContent = weatherDetails.humidity !== undefined ? `${weatherDetails.humidity}%` : '--';
     document.getElementById('pressure-value').textContent = weatherDetails.pressure !== undefined ? `${weatherDetails.pressure} hPa` : '--';
     document.getElementById('wind-value').textContent = weatherDetails.windSpeed !== undefined ? `${(weatherDetails.windSpeed*3.6).toFixed(2)} km/hr`: '--';
+    document.getElementById('wind-value').dataset.ms = weatherDetails.windSpeed !== undefined ? weatherDetails.windSpeed : '';
     document.getElementById('visibility-value').textContent = weatherDetails.visibility !== undefined ? `${weatherDetails.visibility / 1000} km` : '--';
+    document.getElementById('visibility-value').dataset.km = weatherDetails.visibility !== undefined ? (weatherDetails.visibility / 1000) : '';
     document.getElementById('precipitation-value').textContent = weatherDetails.Precipitation !== undefined ? `${weatherDetails.Precipitation} mm` : '--';
+    updateUnitDisplays();
     return weatherDetails;
   } catch (error) {
     console.error("Error fetching weather data:", error);
@@ -112,6 +133,7 @@ async function getForecastDetails(lat, lon) {
         forecastItems[idx].querySelector('.time').textContent =
           item.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         forecastItems[idx].querySelector('.value').textContent = `${Math.round(item.temperature)}°C`;
+        forecastItems[idx].querySelector('.value').dataset.celsius = item.temperature;
         forecastItems[idx].querySelector('img').src =`https://openweathermap.org/img/wn/${item.icon}@2x.png`;
         forecastItems[idx].querySelector('img').alt = item.icon;
       }
@@ -171,11 +193,13 @@ async function getSevenDayForecast(lat, lon) {
         li.querySelector('img').src = `https://openweathermap.org/img/wn/${forecast[idx].icon}@2x.png`;
         li.querySelector('img').alt = forecast[idx].description;
         li.querySelector('.value').textContent = `${forecast[idx].temp}°C`;
+         li.querySelector('.value').dataset.celsius = forecast[idx].temp;
       } else {
         li.querySelector('.day-name').textContent = '--';
         li.querySelector('img').src = '';
         li.querySelector('img').alt = '';
         li.querySelector('.value').textContent = '--';
+        li.querySelector('.value').dataset.celsius = '';
       }
     });
 
@@ -248,6 +272,7 @@ async function getCityCoordinates() {
     await getForecastDetails(lat, lon);
     await getCurrentUVIndex(lat, lon);
     await getSevenDayForecast(lat, lon);
+    updateUnitDisplays();
 
     if(weather){
       const iconUrl= `https://openweathermap.org/img/wn/${weather.icon ? weather.icon : "01d"}@2x.png`;
@@ -258,6 +283,71 @@ async function getCityCoordinates() {
     alert(`Failed to fetch coordinates for ${cityName}. Please try again.`);
   }
 }
+
+
+function updateUnitDisplays() {
+    // Temperature
+    let tempC = parseFloat(document.getElementById('temp-value').dataset.celsius);
+    let feelsC = parseFloat(document.getElementById('feels-like-value').dataset.celsius);
+    if (!isNaN(tempC)) {
+        if (tempUnit === 'imperial') {
+            document.getElementById('temp-value').textContent = `${Math.round(cToF(tempC))}°F`;
+        } else {
+            document.getElementById('temp-value').textContent = `${Math.round(tempC)}°C`;
+        }
+    }
+    if (!isNaN(feelsC)) {
+        if (tempUnit === 'imperial') {
+            document.getElementById('feels-like-value').textContent = `${Math.round(cToF(feelsC))}°F`;
+        } else {
+            document.getElementById('feels-like-value').textContent = `${Math.round(feelsC)}°C`;
+        }
+    }
+
+    // Distance
+    let visKm = parseFloat(document.getElementById('visibility-value').dataset.km);
+    if (!isNaN(visKm)) {
+        if (distanceUnit === 'km') {
+            document.getElementById('visibility-value').textContent = `${visKm} km`;
+        } else if (distanceUnit === 'mi') {
+            document.getElementById('visibility-value').textContent = `${(kmToMi(visKm)).toFixed(2)} mi`;
+        } else if (distanceUnit === 'm') {
+            document.getElementById('visibility-value').textContent = `${kmToM(visKm)} m`;
+        }
+    }
+
+    // WindSpeed
+    let windMs = parseFloat(document.getElementById('wind-value').dataset.ms);
+    if (!isNaN(windMs)) {
+        if (windUnit === 'm/s') {
+            document.getElementById('wind-value').textContent = `${windMs.toFixed(2)} m/s`;
+        } else if (windUnit === 'km/h') {
+            document.getElementById('wind-value').textContent = `${msToKmh(windMs).toFixed(2)} km/h`;
+        } else if (windUnit === 'knots') {
+            document.getElementById('wind-value').textContent = `${msToKnots(windMs).toFixed(2)} knots`;
+        }
+    }
+    //Hourly forecast temperatures
+    document.querySelectorAll('.hourly-forecast .value').forEach(span => {
+        let c = parseFloat(span.dataset.celsius);
+        if (!isNaN(c)) {
+            span.textContent = tempUnit === 'imperial'
+                ? `${Math.round(cToF(c))}°F`
+                : `${Math.round(c)}°C`;
+        }
+    });
+
+    //7-day forecast temperatures
+    document.querySelectorAll('.weekly-forecast .value').forEach(span => {
+        let c = parseFloat(span.dataset.celsius);
+        if (!isNaN(c)) {
+            span.textContent = tempUnit === 'imperial'
+                ? `${Math.round(cToF(c))}°F`
+                : `${Math.round(c)}°C`;
+        }
+    });
+}
+
 
 inputBox.addEventListener("focus", function() {
   inputBox.value = ""; // Clear the input box when focused
@@ -306,6 +396,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     inputBox.value = "ernakulam";
     getCityCoordinates();
   }
+});
+
+document.getElementById('tempUnit').addEventListener('change', function() {
+    tempUnit = this.value;
+    updateUnitDisplays();
+});
+document.getElementById('distanceUnit').addEventListener('change', function() {
+    distanceUnit = this.value;
+    updateUnitDisplays();
+});
+document.getElementById('windUnit').addEventListener('change', function() {
+    windUnit = this.value;
+    updateUnitDisplays();
 });
 
 
