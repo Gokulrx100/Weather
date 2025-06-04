@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Weather</title>
 </head>
 
@@ -88,7 +88,43 @@
         
         
         <section id="Settings" class="view hidden">
-            <h2>Settings</h2>
+            <!-- theme -->
+            <div class="theme-selector">
+                <p style="font-size:22px">Theme</p>
+                <div class="toggle">
+                <input type="checkbox" id="darkModeToggle" />
+                <label for="darkModeToggle" class="dark-label">
+                    <span class="material-icons" id="lightIcon">light_mode</span>
+                    <span class="material-icons" id="darkIcon">dark_mode</span>
+                </label>
+                </div>
+            </div>
+
+            <div id="unit-settings" class="settings-section">
+                <h3>Units</h3>
+
+                <label for="tempUnit">Temperature:</label>
+                <select id="tempUnit" class="unit-dropdown">
+                    <option value="metric">Celsius (°C)</option>
+                    <option value="imperial">Fahrenheit (°F)</option>
+                </select>
+
+                <label for="distanceUnit">Distance:</label>
+                <select id="distanceUnit" class="unit-dropdown">
+                    <option value="km">Kilometers</option>
+                    <option value="mi">Miles</option>
+                    <option value="m">Meters</option>
+                </select>
+
+                <label for="windUnit">Wind Speed:</label>
+                <select id="windUnit" class="unit-dropdown">
+                    <option value="m/s">m/s</option>
+                    <option value="km/h">km/h</option>
+                    <option value="knots">knots</option>
+                </select>
+            </div>
+
+
         </section>
     
     

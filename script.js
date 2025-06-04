@@ -390,3 +390,28 @@ function initMap() {
     }
   });
 }
+
+
+document.getElementById('darkModeToggle').addEventListener('change', function() {
+    if (this.checked) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+});
+
+// adjust the nav bar when viewing map
+const nav = document.querySelector('nav');
+const mapSection = document.getElementById('Map');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && document.body.classList.contains('dark-mode')) {
+      nav.classList.add('map-visible');
+    } else {
+      nav.classList.remove('map-visible');
+    }
+  });
+}, { threshold: 0.3 }); 
+
+observer.observe(mapSection);
