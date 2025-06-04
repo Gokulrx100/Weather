@@ -217,7 +217,7 @@ async function getSevenDayForecast(lat, lon) {
 }
 
 
-function addRecentSearch(city, iconUrl, temp) {
+function addRecentSearch(city, iconUrl, tempCelsius) {
   const list = document.getElementById('recentSearchesList');
   const exists = Array.from(list.querySelectorAll('.city-name')).some(
     span => span.textContent.trim().toLowerCase() === city.trim().toLowerCase()
@@ -230,10 +230,13 @@ function addRecentSearch(city, iconUrl, temp) {
   li.innerHTML = `
     <span class="city-name">${city}</span><br>
     <img src="${iconUrl}" alt="icon" /><br>
-    <span class="value">${temp}</span>
+    <span class="value" data-celsius="${parseFloat(tempCelsius)}"></span>
   `;
   li.classList.add('selected');
   list.insertBefore(li, list.firstChild);
+
+  // Set the correct unit display immediately
+  updateRecentSearchTemp(li.querySelector('.value'), parseFloat(tempCelsius));
 
   const items = list.querySelectorAll('li');
   if (items.length > 6) {
@@ -252,6 +255,17 @@ function addRecentSearch(city, iconUrl, temp) {
     inputBox.value = city;
     await getCityCoordinates();
   });
+}
+
+
+function updateRecentSearchTemp(span, celsius) {
+  if (isNaN(celsius)) {
+    span.textContent = '--';
+    return;
+  }
+  span.textContent = tempUnit === 'imperial'
+    ? `${Math.round(cToF(celsius))}°F`
+    : `${Math.round(celsius)}°C`;
 }
 
 
@@ -276,8 +290,8 @@ async function getCityCoordinates() {
 
     if(weather){
       const iconUrl= `https://openweathermap.org/img/wn/${weather.icon ? weather.icon : "01d"}@2x.png`;
-      const temp = weather.temperature !== undefined ? `${Math.round(weather.temperature)}°C` : '--';
-      addRecentSearch(name, iconUrl, temp);
+      const tempC = weather.temperature !== undefined ? weather.temperature : '';
+      addRecentSearch(name, iconUrl, tempC);
     }
   } catch (error) {
     alert(`Failed to fetch coordinates for ${cityName}. Please try again.`);
@@ -346,6 +360,11 @@ function updateUnitDisplays() {
                 : `${Math.round(c)}°C`;
         }
     });
+
+    document.querySelectorAll('#recentSearchesList .value').forEach(span => {
+  let c = parseFloat(span.dataset.celsius);
+  updateRecentSearchTemp(span, c);
+});
 }
 
 
