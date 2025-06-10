@@ -1,6 +1,6 @@
 # Weather Dashboard 🌦️
 
-A modern, responsive weather dashboard web app built with HTML, CSS, and JavaScript.  
+A modern Weather dashboard web app built with HTML, CSS, and JavaScript.  
 It provides real-time weather, air quality, UV index, hourly and 7-day forecasts, interactive map overlays, recent searches, and customizable units and theme.
 
 ---
@@ -27,9 +27,6 @@ It provides real-time weather, air quality, UV index, hourly and 7-day forecasts
 
 - **Theme Toggle:**  
   Switch between light and dark mode. Dark mode includes a custom background and color scheme.
-
-- **Responsive Design:**  
-  Works well on desktop and mobile.
 
 ---
 
