@@ -1,4 +1,4 @@
-const apiKey = 'YOUR_API_KEY';
+const apiKey = process.env.APIKEY;
 let tempUnit = 'metric';      
 let distanceUnit = 'km';      
 let windUnit = 'km/h';        
