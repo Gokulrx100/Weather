@@ -17,12 +17,15 @@
 - [🎯 Section 1: User Perspective](#-section-1-user-perspective)
   - [Features Overview](#features-overview)
   - [User Interface Guide](#user-interface-guide)
-  - [Getting Started](#getting-started)
+  - [Getting Started](#-getting-started)
 - [⚙️ Section 2: Developer Perspective](#️-section-2-developer-perspective)
-  - [API Schema & Endpoints](#api-schema--endpoints)
-  - [Development Setup](#development-setup)
-  - [Code Structure](#code-structure)
-  - [Deployment Guide](#deployment-guide)
+  - [API Schema & Endpoints](#-api-schema--endpoints)
+  - [Development Setup](#️-development-setup)
+  - [Code Structure](#-code-structure)
+  - [Deployment Guide](#-deployment-guide)
+- [Contributing](#-contributing)
+- [Acknowledgments](#-acknowledgments)
+- [Support](#-support)
 
 ---
 
