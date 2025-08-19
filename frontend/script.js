@@ -114,7 +114,7 @@ async function getForecastDetails(lat, lon) {
           icon: item.weather[0].icon
         };
       })
-      .filter(item => item.time > now) // filter out past forecasts
+      .filter(item => item.time > now)
       .slice(0, 4);
 
     console.log("Next 4 Hour Forecasts (Local):", nextForecasts);
@@ -142,7 +142,6 @@ async function getForecastDetails(lat, lon) {
   } catch (error) {
     console.error("Error fetching forecast data:", error);
 
-    // Reset forecast UI
     document.querySelectorAll('.hourly-forecast li').forEach(li => {
       li.querySelector('.value').textContent = '--';
       li.querySelector('img').src = '';
@@ -234,7 +233,6 @@ function addRecentSearch(city, iconUrl, tempCelsius) {
   li.classList.add('selected');
   list.insertBefore(li, list.firstChild);
 
-  // Set the correct unit display immediately
   updateRecentSearchTemp(li.querySelector('.value'), parseFloat(tempCelsius));
 
   const items = list.querySelectorAll('li');
