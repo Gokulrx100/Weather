@@ -1,4 +1,3 @@
-const apiKey = 'YOUR_API_KEY';
 let tempUnit = 'metric';      
 let distanceUnit = 'km';      
 let windUnit = 'km/h';        
@@ -37,7 +36,7 @@ const inputBox= document.getElementById("cityInput");
 
 
 async function getWeatherDetails(name, lat, lon, country, state) {
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  const url = `/api/weather/current?lat=${lat}&lon=${lon}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -80,7 +79,7 @@ async function getWeatherDetails(name, lat, lon, country, state) {
 
 
 async function getAirQuality(lat, lon) {
-  const url = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const url = `/api/weather/air-quality?lat=${lat}&lon=${lon}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -96,7 +95,7 @@ async function getAirQuality(lat, lon) {
 
 
 async function getForecastDetails(lat, lon) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  const url = `/api/weather/forecast?lat=${lat}&lon=${lon}`;
 
   try {
     const response = await fetch(url);
@@ -174,7 +173,7 @@ async function getCurrentUVIndex(lat, lon) {
 
 
 async function getSevenDayForecast(lat, lon) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=7&units=metric&appid=${apiKey}`;
+  const url = `/api/weather/forecast7?lat=${lat}&lon=${lon}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -272,7 +271,7 @@ function updateRecentSearchTemp(span, celsius) {
 async function getCityCoordinates() {
   let cityName = inputBox.value.trim();
   if (!cityName) return;
-  let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
+  let GEOCODING_API_URL = `/api/weather/geocode?city=${encodeURIComponent(cityName)}`;
   try {
     const response = await fetch(GEOCODING_API_URL);
     const data = await response.json();
@@ -400,7 +399,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
 
-    const response = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`);
+    const response = await fetch(`/api/weather/reverse-geocode?lat=${lat}&lon=${lon}`);
     const data = await response.json();
 
     if (data && data[0] && data[0].name) {
@@ -430,9 +429,10 @@ document.getElementById('windUnit').addEventListener('change', function() {
     updateUnitDisplays();
 });
 
+async function initMap() {
+  const keyResponse = await fetch('/api/weather/map-key');
+  const { apiKey } = await keyResponse.json();
 
-// MAP
-function initMap() {
   const map = L.map('map', {
         minZoom: 2,
         maxBounds: [
@@ -468,7 +468,6 @@ function initMap() {
     opacity: 0.5
   });
 
-  //default
   tempLayer.addTo(map);
 
   //layer control
@@ -484,7 +483,7 @@ function initMap() {
    map.on('click', async function (e) {
     const { lat, lng } = e.latlng;
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${apiKey}`;
+    const url = `/api/weather/current?lat=${lat}&lon=${lng}`;
 
     try {
       const res = await fetch(url);
@@ -513,7 +512,6 @@ function initMap() {
   });
 }
 
-
 document.getElementById('darkModeToggle').addEventListener('change', function() {
     if (this.checked) {
         document.body.classList.add('dark-mode');
@@ -522,7 +520,6 @@ document.getElementById('darkModeToggle').addEventListener('change', function() 
     }
 });
 
-// adjust the nav bar when viewing map
 const nav = document.querySelector('nav');
 const mapSection = document.getElementById('Map');
 
